@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" layout="fill">
+    <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>{{toolbarTitle}}</span>
+    <span class="spacer"></span>
+    <button mat-icon-button>
+        <mat-icon>search</mat-icon>
+    </button>
+    <button mat-icon-button>
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <button mat-button routerLink="/products" routerLinkActive="active">Products Catelog</button>
+    <app-go-to-login></app-go-to-login>
+</mat-toolbar>

@@ -1,0 +1,16 @@
+<ng-container *ngIf="(productBaseResponse$ | async) as data">
+    <mat-grid-list cols="4" rowHeight="1:1" gutterSize="16">
+        <mat-grid-tile *ngFor="let product of data.result">
+            <mat-card>
+                <img mat-card-image [src]="product.imagePath" [alt]="product.title">
+                <mat-card-content>
+                    <p mat-card-title>{{ product.title }}</p>
+                    <p mat-card-subtitle>RM {{ product.price }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <app-add-cart-button></app-add-cart-button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</ng-container>
