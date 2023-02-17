@@ -10,6 +10,9 @@ import { BaseResponse } from '../models/base-response';
 })
 export class ProductService {
   private _productUrl = "products";
+  // headers = new HttpHeaders({
+  //   Authorization: `Bearer ${token}`
+  // });
 
   constructor(private _http: HttpClient, private _config: ConfigService) { }
 

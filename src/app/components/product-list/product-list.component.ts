@@ -15,16 +15,16 @@ export class ProductListComponent implements OnInit {
   productBaseResponse$: Observable<BaseResponse> = this.store.pipe(
     select((state) => state.productState.products)
   );
-  mybreakpoint: number | undefined;
 
   constructor(private store: Store<{ productState: ProductState }>) { }
 
   ngOnInit(): void {
-    this.mybreakpoint = (window.innerWidth <= 600) ? 1 : 6;
-    this.store.dispatch(retrieveProduct({ pageSize: 8, page: 1 }));
+    this.store.dispatch(retrieveProduct({ pageSize: 10, page: 1 }));
   }
 
-  // handleSize(event) {
-  //   this.mybreakpoint = (event.target.innerWidth <= 600) ? 1 : 6;
-  // }
+  onPageChange(event: any) {
+    this.store.dispatch(retrieveProduct({ pageSize: event.pageSize, page: event.pageIndex + 1 }));
+  }
+
+  
 }

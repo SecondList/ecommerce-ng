@@ -13,19 +13,25 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { AddCartButtonComponent } from './components/add-cart-button/add-cart-button.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { productReducer } from './state/products/products.reducer';
 import { authReducer } from './state/auth/auth.reducer';
+import { spinnerReducer } from './state/loading-spinner/loading-spinner.reducer';
 import { ProductEffects } from './state/products/products.effect';
 import { AuthEffect } from './state/auth/auth.effect';
 import { GoToLoginComponent } from './components/go-to-login/go-to-login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegisterComponent } from './components/register/register.component';
+import { GoToRegisterComponent } from './components/go-to-register/go-to-register.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +40,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddCartButtonComponent,
     ToolbarComponent,
     LoginFormComponent,
-    GoToLoginComponent
+    GoToLoginComponent,
+    RegisterComponent,
+    GoToRegisterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ productState: productReducer, authState: authReducer }),
+    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer }),
     EffectsModule.forRoot([ProductEffects, AuthEffect, ]),
     StoreDevtoolsModule.instrument({ name: 'NgRx Store Ecommerce App', maxAge: 25, logOnly: !isDevMode() }),
     FormsModule,
@@ -50,9 +58,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FlexLayoutModule,
     MatGridListModule,
     MatCardModule,
+    MatMenuModule,
     MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
     BrowserAnimationsModule
   ],
   providers: [],

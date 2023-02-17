@@ -1,20 +1,23 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { Action, Store } from "@ngrx/store";
+import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { BaseResponse } from "src/app/models/base-response";
 import { Product } from "src/app/models/product";
 import { ProductService } from "src/app/services/product.service";
+import { hideSpinner, showSpinner } from "../loading-spinner/loading-spinner.actions";
 import { addProduct, createProductFailure, createProductSuccess, retrieveProduct, loadProductFailure, loadProductSuccess } from "./products.actions";
+import { ProductState } from "./products.state";
 
 @Injectable()
 export class ProductEffects {
 
-    loadProduct$ = createEffect(() =>
+    loadProduct$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(retrieveProduct),
-            switchMap(({ pageSize, page }) =>
-                this.productService.getProducts(pageSize, page).pipe(
+            switchMap(({ pageSize, page }) => {
+                this.store.dispatch(showSpinner());
+                return this.productService.getProducts(pageSize, page).pipe(
                     map((baseResponse) => {
                         // Formate product array
                         const formattedProducts = baseResponse.result.map((product: Product) => {
@@ -28,26 +31,33 @@ export class ProductEffects {
                         return {
                             ...baseResponse,
                             result: formattedProducts
-                        }
+                        };
                     }),
-                    map(baseResponse => loadProductSuccess({ baseResponse: baseResponse })),
+                    map(baseResponse => {
+                        this.store.dispatch(hideSpinner());
+                        return loadProductSuccess({ baseResponse: baseResponse });
+                    }),
+                    catchError((error) => {
+                        this.store.dispatch(hideSpinner());
+                        return of(loadProductFailure({ error: error.error.message }));
+                    })
                 )
-            ),
-            tap((payload) => console.log(payload))
+            }),
+            //tap((payload) => console.log(payload))
         )
     );
 
-    addProduct$ = createEffect(() =>
+    addProduct$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(addProduct),
             switchMap(({ product }) =>
                 this.productService.createProduct(product).pipe(
                     map((product) => createProductSuccess({ product: product })),
-                    catchError((error) => of(createProductFailure({ error: error })))
+                    catchError((error) => of(createProductFailure({ error: error.error.message })))
                 )
             )
         )
     );
 
-    constructor(private actions$: Actions, private productService: ProductService) { }
+    constructor(private actions$: Actions, private productService: ProductService, private store: Store<ProductState>) { }
 }

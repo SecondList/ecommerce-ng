@@ -8,16 +8,27 @@ import { ConfigService } from './config.service';
   providedIn: 'root'
 })
 export class AuthService {
-  private _AuthUrl = "users/login";
+  private _AuthUrl = "users";
 
   constructor(private _http: HttpClient, private _config: ConfigService) { }
 
   public login(email: string, password: string): Observable<BaseResponse> {
     return this._http.post<BaseResponse>(
-      `${this._config.apiUrl}${this._AuthUrl}`,
+      `${this._config.apiUrl}${this._AuthUrl}\\login`,
       {
         email, password
       }
     );
   }
+
+  public register(email: string, password: string, confirmPassword: string): Observable<BaseResponse> {
+    return this._http.post<BaseResponse>(
+      `${this._config.apiUrl}${this._AuthUrl}\\register`,
+      {
+        email, password, confirmPassword
+      }
+    );
+  }
+
+
 }

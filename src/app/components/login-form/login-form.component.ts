@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { login } from 'src/app/state/auth/auth.actions';
 import { AuthState } from 'src/app/state/auth/auth.state';
 
@@ -11,6 +12,12 @@ import { AuthState } from 'src/app/state/auth/auth.state';
 })
 export class LoginFormComponent {
   loginForm!: FormGroup;
+  authError$: Observable<string> = this.store.pipe(
+    select((state) => state.authState.error)
+  );
+  token$: Observable<string> = this.store.pipe(
+    select((state) => state.authState.token)
+  );
 
   constructor(private fb: FormBuilder, private store: Store<{ authState: AuthState }>) { }
 

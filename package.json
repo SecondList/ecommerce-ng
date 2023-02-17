@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "create component": "ng g c",
+    "create service": "ng g s"
   },
   "private": true,
   "dependencies": {
