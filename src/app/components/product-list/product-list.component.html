@@ -3,7 +3,6 @@
         <div class="content">
             <div fxLayout="row wrap" fxLayoutGap="16px grid">
                 <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let product of data.result">
-
                     <mat-card fxFlex="100%" fxLayout="column">
                         <img mat-card-image [src]="product.imagePath" [alt]="product.title">
                         <mat-card-content fxFlex="100%" fxLayout="column">

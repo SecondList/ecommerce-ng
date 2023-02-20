@@ -5,8 +5,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { hideSpinner, showSpinner } from '../loading-spinner/loading-spinner.actions';
+import { SpinnerState } from '../loading-spinner/loading-spinner.state';
 import { login, loginSuccess, loginFailure, register, registerSuccess, registerFailure } from './auth.actions';
-import { AuthState } from './auth.state';
 
 
 @Injectable()
@@ -50,5 +50,5 @@ export class AuthEffect {
         )
     );
 
-    constructor(private actions$: Actions, private authService: AuthService, private store: Store<AuthState>) { }
+    constructor(private actions$: Actions, private authService: AuthService, private store: Store<SpinnerState>) { }
 }

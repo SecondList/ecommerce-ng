@@ -2,21 +2,22 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from "@ngrx/store";
 import { Observable, of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { Product } from "src/app/models/product";
 import { ProductService } from "src/app/services/product.service";
 import { hideSpinner, showSpinner } from "../loading-spinner/loading-spinner.actions";
-import { addProduct, createProductFailure, createProductSuccess, retrieveProduct, loadProductFailure, loadProductSuccess } from "./products.actions";
-import { ProductState } from "./products.state";
+import { SpinnerState } from "../loading-spinner/loading-spinner.state";
+import { addProduct, createProductFailure, createProductSuccess, loadProductFailure, loadProductSuccess, loadProduct } from "./products.actions";
 
 @Injectable()
-export class ProductEffects {
+export class ProductEffect {
 
     loadProduct$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
-            ofType(retrieveProduct),
-            switchMap(({ pageSize, page }) => {
+            ofType(loadProduct),
+            mergeMap(({ pageSize, page }) => {
                 this.store.dispatch(showSpinner());
+
                 return this.productService.getProducts(pageSize, page).pipe(
                     map((baseResponse) => {
                         // Formate product array
@@ -50,7 +51,7 @@ export class ProductEffects {
     addProduct$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(addProduct),
-            switchMap(({ product }) =>
+            mergeMap(({ product }) =>
                 this.productService.createProduct(product).pipe(
                     map((product) => createProductSuccess({ product: product })),
                     catchError((error) => of(createProductFailure({ error: error.error.message })))
@@ -59,5 +60,5 @@ export class ProductEffects {
         )
     );
 
-    constructor(private actions$: Actions, private productService: ProductService, private store: Store<ProductState>) { }
+    constructor(private actions$: Actions, private productService: ProductService, private store: Store<SpinnerState>) { }
 }

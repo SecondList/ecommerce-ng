@@ -17,7 +17,6 @@ export class ProductService {
   constructor(private _http: HttpClient, private _config: ConfigService) { }
 
   public getProducts(pageSize: number, page: number): Observable<BaseResponse> {
-
     return this._http.get<BaseResponse>(
       this.getApiUrl(),
       {

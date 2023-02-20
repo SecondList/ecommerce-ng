@@ -26,8 +26,10 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { productReducer } from './state/products/products.reducer';
 import { authReducer } from './state/auth/auth.reducer';
 import { spinnerReducer } from './state/loading-spinner/loading-spinner.reducer';
-import { ProductEffects } from './state/products/products.effect';
+import { productCategoryReducer } from './state/product-category/product-category.reducer';
+import { ProductEffect } from './state/products/products.effect';
 import { AuthEffect } from './state/auth/auth.effect';
+import { ProductCategoryEffect } from './state/product-category/product-category.effect';
 import { GoToLoginComponent } from './components/go-to-login/go-to-login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegisterComponent } from './components/register/register.component';
@@ -48,8 +50,8 @@ import { GoToRegisterComponent } from './components/go-to-register/go-to-registe
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer }),
-    EffectsModule.forRoot([ProductEffects, AuthEffect, ]),
+    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer, productCategoryState: productCategoryReducer }),
+    EffectsModule.forRoot([ProductEffect, AuthEffect, ProductCategoryEffect ]),
     StoreDevtoolsModule.instrument({ name: 'NgRx Store Ecommerce App', maxAge: 25, logOnly: !isDevMode() }),
     FormsModule,
     ReactiveFormsModule,

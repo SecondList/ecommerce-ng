@@ -2,9 +2,9 @@ import { createAction, props } from '@ngrx/store';
 import { BaseResponse } from 'src/app/models/base-response';
 import { Product } from 'src/app/models/product';
 
-export const retrieveProduct = createAction(
+export const loadProduct = createAction(
     '[Product] Load Product',
-    props<{ pageSize: number, page: number }>()
+    props<{ categoryId: any, pageSize: number, page: number }>()
 );
 export const loadProductSuccess = createAction(
     '[Product] Load Product Success',
@@ -16,7 +16,7 @@ export const loadProductFailure = createAction(
 );
 export const loadProductByCategory = createAction(
     '[Product] Load Product By Category',
-    props<{ pageSize: number, pag: number }>()
+    props<{ categoryId: number, pageSize: number, page: number }>()
 );
 export const loadProductByCategorySuccess = createAction(
     '[Product] Load Product By Category Success',
