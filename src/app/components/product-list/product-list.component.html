@@ -1,25 +1,32 @@
-<ng-container *ngIf="(productBaseResponse$ | async) as data">
-    <div fxLayout="column">
-        <div class="content">
-            <div fxLayout="row wrap" fxLayoutGap="16px grid">
-                <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let product of data.result">
-                    <mat-card fxFlex="100%" fxLayout="column">
-                        <img mat-card-image [src]="product.imagePath" [alt]="product.title">
-                        <mat-card-content fxFlex="100%" fxLayout="column">
-                            <p fxFlex="100%" mat-card-title>{{ product.title }}</p>
-                            <p mat-card-subtitle>RM {{ product.price }}</p>
-                        </mat-card-content>
-                        <mat-card-actions fxLayout="column">
-                            <app-add-cart-button></app-add-cart-button>
-                        </mat-card-actions>
-                    </mat-card>
+<mat-card>
+    <mat-card-content>
+        <h2>Product</h2>
+        <ng-container *ngIf="(productBaseResponse$ | async) as data">
+            <h3>{{data.totalCount}} products.</h3>
+            <div fxLayout="column">
+                <div class="content">
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+                        <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let product of data.result">
+                            <mat-card fxFlex="100%" fxLayout="column">
+                                <img mat-card-image [src]="product.imagePath" [alt]="product.title">
+                                <mat-card-content fxFlex="100%" fxLayout="column">
+                                    <p fxFlex="100%" mat-card-title>{{ product.title }}</p>
+                                    <p mat-card-subtitle>{{ product.price | currency:'MYR':'symbol':'1.2-2'}}</p>
+                                </mat-card-content>
+                                <mat-card-actions fxLayout="column">
+                                    <app-add-cart-button [productId]="product.productId"></app-add-cart-button>
+                                </mat-card-actions>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+
+                <div fxLayoutAlign="center end">
+                    <mat-paginator [length]="data.totalCount" [pageSize]="data.pageSize" [pageIndex]="data.page"
+                        [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"
+                        (pageSize)="onPageChange($event)"></mat-paginator>
                 </div>
             </div>
-        </div>
-
-        <div fxLayoutAlign="center end">
-            <mat-paginator [length]="data.totalCount" [pageSize]="data.pageSize" (page)="onPageChange($event)"
-                (pageSize)="onPageChange($event)"></mat-paginator>
-        </div>
-    </div>
-</ng-container>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

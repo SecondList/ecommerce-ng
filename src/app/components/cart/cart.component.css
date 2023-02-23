@@ -1,0 +1,14 @@
+  mat-paginator {
+    display: flex;
+    justify-content: center;
+  }
+
+  mat-card {
+    max-width: 95%;
+    margin: 1em auto;
+    text-align: center;
+  }
+
+  mat-form-field {
+    display: block;
+  }

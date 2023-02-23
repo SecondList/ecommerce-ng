@@ -14,19 +14,7 @@ export const loadProductFailure = createAction(
     '[Product] Load Product Failure',
     props<{ error: any}>()
 );
-export const loadProductByCategory = createAction(
-    '[Product] Load Product By Category',
-    props<{ categoryId: number, pageSize: number, page: number }>()
-);
-export const loadProductByCategorySuccess = createAction(
-    '[Product] Load Product By Category Success',
-    props<{ baseResponse: BaseResponse}>()
-);
-export const loadProductByCategoryFailure = createAction(
-    '[Product] Load Product By Category Failure',
-    props<{ error: any}>()
-);
-export const addProduct = createAction(
+export const createProduct = createAction(
     '[Product] Add Product',
     props<{ product: Product }>()
 );

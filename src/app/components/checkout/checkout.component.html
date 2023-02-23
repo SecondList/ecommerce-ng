@@ -1,0 +1,136 @@
+<mat-card>
+    <mat-card-content>
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+            <div fxFlex="100%" fxLayout="column">
+                <h2>Check Out</h2>
+                <mat-error *ngIf="checkoutError$ | async as errorMessage">
+                    {{errorMessage}}
+                </mat-error>
+                <div fxFlex="100%" fxLayout="column">
+                    <h3>Shipping Address</h3>
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field fxFlex="40%">
+                            <input matInput placeholder="First Name" formControlName="firstName">
+                            <mat-error *ngIf="checkoutForm.get('firstName')?.hasError('required')">First Name is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('firstName')?.hasError('maxlength')">First Name must be
+                                less than {{this.charMax1}}
+                                characters</mat-error>
+                        </mat-form-field>
+                        <mat-form-field fxFlex="40%">
+                            <input matInput placeholder="Last Name" formControlName="lastName">
+                            <mat-error *ngIf="checkoutForm.get('lastName')?.hasError('required')">Last Name is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('lastName')?.hasError('maxlength')">Last Name must be
+                                less than {{this.charMax1}}
+                                characters</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field>
+                        <input matInput placeholder="Receipient Email" formControlName="receiptEmail">
+                        <mat-error *ngIf="checkoutForm.get('receiptEmail')?.hasError('email')">Invalid email
+                            address</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Address" formControlName="address">
+                        <mat-error *ngIf="checkoutForm.get('address')?.hasError('required')">Address is
+                            required</mat-error>
+                        <mat-error *ngIf="checkoutForm.get('address')?.hasError('maxlength')">Address must be
+                            less than {{this.charMax2}}
+                            characters</mat-error>
+                    </mat-form-field>
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field>
+                            <input matInput placeholder="Postal Code" formControlName="postalCode">
+                            <mat-error *ngIf="checkoutForm.get('postalCode')?.hasError('required')">Postal Code is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('postalCode')?.hasError('maxlength')">Postal Code must be
+                                less than {{this.charMax4}}
+                                characters</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="City" formControlName="city">
+                            <mat-error *ngIf="checkoutForm.get('city')?.hasError('required')">City is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('city')?.hasError('maxlength')">City must be less than
+                                {{this.charMax3}} characters</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field>
+                            <input matInput placeholder="State" formControlName="state">
+                            <mat-error *ngIf="checkoutForm.get('state')?.hasError('required')">State is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('state')?.hasError('maxlength')">State must be
+                                less than {{this.charMax3}}
+                                characters</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="Country" formControlName="country">
+                            <mat-error *ngIf="checkoutForm.get('country')?.hasError('required')">Country is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('country')?.hasError('maxlength')">Country must be
+                                less than {{this.charMax3}}
+                                characters</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field>
+                        <input matInput placeholder="Carrier" formControlName="carrier">
+                        <mat-error *ngIf="checkoutForm.get('carrier')?.hasError('required')">Carrirer is
+                            required</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="100%" fxLayout="column">
+                    <mat-form-field>
+                        <input matInput placeholder="Card Number" formControlName="cardNumber">
+                        <mat-error *ngIf="checkoutForm.get('cardNumber')?.hasError('required')">Card Number is
+                            required</mat-error>
+                        <mat-error *ngIf="checkoutForm.get('cardNumber')?.hasError('invalidCardNumber')">
+                            Invalid credit card number.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput placeholder="Card Holder Name" formControlName="cardName">
+                        <mat-error *ngIf="checkoutForm.get('cardName')?.hasError('required')">Card Holder Name is
+                            required</mat-error>
+                        <mat-error *ngIf="checkoutForm.get('cardName')?.hasError('maxlength')">Card Holder Name must be
+                            less than {{this.charMax1}}
+                            characters</mat-error>
+                    </mat-form-field>
+                    <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                        <mat-form-field>
+                            <input matInput type="number" placeholder="Expiry Month (mm)" formControlName="expiryMonth"
+                                [min]="1" [max]="12">
+                            <mat-error *ngIf="checkoutForm.get('expiryMonth')?.hasError('required')">Expiry Month is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('expiryMonth')?.hasError('min')">Month must be between 1
+                                to 12.</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('expiryMonth')?.hasError('max')">Month must be between 1
+                                to 12.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="number" placeholder="Expiry Year (yy)" formControlName="expiryYear"
+                                [min]="0" [max]="99">
+                            <mat-error *ngIf="checkoutForm.get('expiryYear')?.hasError('required')">Expiry Year is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('expiryYear')?.hasError('min')">Month must be between 0
+                                to 99.</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('expiryYear')?.hasError('max')">Month must be between 0
+                                to 99.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput placeholder="CVC" formControlName="cvc">
+                            <mat-error *ngIf="checkoutForm.get('cvc')?.hasError('required')">CVC is
+                                required</mat-error>
+                            <mat-error *ngIf="checkoutForm.get('cvc')?.hasError('pattern')">CVC should be 3 or 4
+                                numbers.</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <mat-card-actions fxLayout="column">
+                    <button mat-raised-button color="primary" [disabled]="!checkoutForm.valid">Checkout</button>
+                </mat-card-actions>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

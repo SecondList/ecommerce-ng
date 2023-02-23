@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, switchMap, tap } from 'rxjs';
 import { BaseResponse } from 'src/app/models/base-response';
 import { ProductCategoryState } from 'src/app/state/product-category/product-category.state';
-import { loadProduct, loadProductByCategory } from 'src/app/state/products/products.actions';
+import { loadProduct } from 'src/app/state/products/products.actions';
+import { retrieveProductBaseResponse } from 'src/app/state/products/products.selector';
 import { ProductState } from 'src/app/state/products/products.state';
 import { AddCartButtonComponent } from '../add-cart-button/add-cart-button.component';
 
@@ -14,28 +15,27 @@ import { AddCartButtonComponent } from '../add-cart-button/add-cart-button.compo
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  productBaseResponse$: Observable<BaseResponse> = this.store.pipe(
-    select((state) => state.productState.products)
-  );
-  categoryId: any = null;
-  pageSize: any;
-  page: any;
+  productBaseResponse$: Observable<BaseResponse> = this.store.pipe(select(retrieveProductBaseResponse));
+  pageSizeOptions = [5, 10];
 
-  constructor(private store: Store<{ productState: ProductState, productCategoryState: ProductCategoryState }>, private route: ActivatedRoute) { }
+  constructor(private store: Store<{ productState: ProductState, productCategoryState: ProductCategoryState }>, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      this.categoryId = params['categoryId'];
-      this.pageSize = params['pageSize'];
-      this.page = params['page'];
-    });
+    combineLatest([
+      this.route.params,
+      this.route.queryParams
+    ]).pipe(
+      switchMap(async ([params, queryParams]) => {
+        const pageSize = this.pageSizeOptions.includes(+queryParams['pageSize']) ? queryParams['pageSize'] : 10;
+        const page = isNaN(queryParams['page']) ? 1 : queryParams['page'];
 
-    this.store.dispatch(loadProduct({ categoryId: this.categoryId, pageSize: 10, page: 1 }));
+        this.store.dispatch(loadProduct({ categoryId: params['categoryId'], pageSize: pageSize, page: page }))
+      })
+    ).subscribe();
   }
 
   onPageChange(event: any) {
-    this.store.dispatch(loadProduct({ categoryId: this.categoryId, pageSize: event.pageSize, page: event.pageIndex + 1 }));
+    const queryParams = { page: event.pageIndex + 1, pageSize: event.pageSize };
+    this.router.navigate([], { queryParams });
   }
-
-
 }

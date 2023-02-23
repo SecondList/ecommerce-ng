@@ -22,7 +22,7 @@ export class ProductCategoryService {
 
   public getProductsByCategory(categoryId: number, pageSize: number, page: number): Observable<BaseResponse> {
     return this._http.get<BaseResponse>(
-      this.getApiUrl(),
+      `${this.getApiUrl()}\\${categoryId}\\products`,
       {
         params: new HttpParams()
           .set('pageSize', pageSize)

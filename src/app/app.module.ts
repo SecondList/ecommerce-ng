@@ -1,6 +1,6 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,10 +8,34 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { AddCartButtonComponent } from './components/add-cart-button/add-cart-button.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { LoginFormComponent } from './components/login-form/login-form.component';
+import { spinnerReducer } from './state/loading-spinner/loading-spinner.reducer';
+import { ProductEffect } from './state/products/products.effect';
+import { productReducer } from './state/products/products.reducer';
+import { AuthEffect } from './state/auth/auth.effect';
+import { authReducer } from './state/auth/auth.reducer';
+import { ProductCategoryEffect } from './state/product-category/product-category.effect';
+import { productCategoryReducer } from './state/product-category/product-category.reducer';
+import { CartEffect } from './state/cart/cart.effect';
+import { cartReducer } from './state/cart/cart.reducer';
+import { checkoutReducer } from './state/checkout/checkout.reducer';
+import { CheckoutEffect } from './state/checkout/checkout.effect';
+import { GoToLoginComponent } from './components/go-to-login/go-to-login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegisterComponent } from './components/register/register.component';
+import { GoToRegisterComponent } from './components/go-to-register/go-to-register.component';
+import { CartComponent } from './components/cart/cart.component';
+import { DeleteFromCartComponent } from './components/delete-from-cart/delete-from-cart.component';
+import { UpdateOrderQuantityComponent } from './components/update-order-quantity/update-order-quantity.component';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,21 +43,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { ProductListComponent } from './components/product-list/product-list.component';
-import { AddCartButtonComponent } from './components/add-cart-button/add-cart-button.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { LoginFormComponent } from './components/login-form/login-form.component';
-import { productReducer } from './state/products/products.reducer';
-import { authReducer } from './state/auth/auth.reducer';
-import { spinnerReducer } from './state/loading-spinner/loading-spinner.reducer';
-import { productCategoryReducer } from './state/product-category/product-category.reducer';
-import { ProductEffect } from './state/products/products.effect';
-import { AuthEffect } from './state/auth/auth.effect';
-import { ProductCategoryEffect } from './state/product-category/product-category.effect';
-import { GoToLoginComponent } from './components/go-to-login/go-to-login.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegisterComponent } from './components/register/register.component';
-import { GoToRegisterComponent } from './components/go-to-register/go-to-register.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ClearCartComponent } from './components/clear-cart/clear-cart.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 
 @NgModule({
   declarations: [
@@ -44,14 +57,19 @@ import { GoToRegisterComponent } from './components/go-to-register/go-to-registe
     LoginFormComponent,
     GoToLoginComponent,
     RegisterComponent,
-    GoToRegisterComponent
+    GoToRegisterComponent,
+    CartComponent,
+    DeleteFromCartComponent,
+    UpdateOrderQuantityComponent,
+    ClearCartComponent,
+    CheckoutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer, productCategoryState: productCategoryReducer }),
-    EffectsModule.forRoot([ProductEffect, AuthEffect, ProductCategoryEffect ]),
+    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer, productCategoryState: productCategoryReducer, cartState: cartReducer, checkoutState: checkoutReducer }),
+    EffectsModule.forRoot([ProductEffect, AuthEffect, ProductCategoryEffect, CartEffect, CheckoutEffect]),
     StoreDevtoolsModule.instrument({ name: 'NgRx Store Ecommerce App', maxAge: 25, logOnly: !isDevMode() }),
     FormsModule,
     ReactiveFormsModule,
@@ -59,6 +77,7 @@ import { GoToRegisterComponent } from './components/go-to-register/go-to-registe
     MatToolbarModule,
     FlexLayoutModule,
     MatGridListModule,
+    MatTableModule,
     MatCardModule,
     MatMenuModule,
     MatButtonModule,
@@ -66,9 +85,15 @@ import { GoToRegisterComponent } from './components/go-to-register/go-to-registe
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatSnackBarModule,
+    MatCheckboxModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorService,
+    multi: true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

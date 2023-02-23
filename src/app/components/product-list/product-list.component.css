@@ -1,4 +1,3 @@
-
 @media screen and (max-width: 599px) {
   .product-card {
     width: 50%;
@@ -8,4 +7,14 @@
 mat-paginator {
   display: flex;
   justify-content: center;
-} 
+}
+
+mat-card {
+  max-width: 90%;
+  margin: 1em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}

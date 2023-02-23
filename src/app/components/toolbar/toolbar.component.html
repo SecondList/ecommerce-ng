@@ -10,7 +10,7 @@
                 <app-go-to-register></app-go-to-register>
             </ng-container>
             <ng-container *ngIf="isAuthenticated$ | async">
-                <button mat-button (click)="logout()">
+                <button mat-button routerLink="/cart">
                     <mat-icon>shopping_cart</mat-icon>
                     Cart
                 </button>
@@ -25,7 +25,7 @@
         <!-- <ng-container *ngIf="productCategory$ | async as productCategories"> -->
         <div fxShow="false" fxLayout="row wrap" fxShow.gt-sm>
             <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
-                <button mat-stroked-button color="accent" routerLink="/products" [queryParams]="{categoryId: productCategory.categoryId}">
+                <button mat-button [routerLink]="['/products/', productCategory.categoryId]">
                     {{productCategory.categoryName}}
                 </button>
             </ng-container>
@@ -36,8 +36,8 @@
     </mat-toolbar-row>
 </mat-toolbar>
 <mat-menu x-position="before" #menu="matMenu">
-    <ng-container *ngfor="let productCategory of (productCategory$ | async) as productCategories">
-        <button mat-menu-item routerLink="/products" [queryParams]="{categoryId: productCategory.categoryId}">
+    <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
+        <button mat-menu-item [routerLink]="['/products/', productCategory.categoryId]">
             {{productCategory.categoryName}}
         </button>
     </ng-container>
