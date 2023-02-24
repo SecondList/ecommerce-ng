@@ -64,3 +64,6 @@ export const updateSelectedCart = createAction(
     '[Cart] Update Selected Cart',
     props<{ selectedCarts: any }>()
 );
+export const resetCart = createAction(
+    '[Cart] Chekcout Success'
+);

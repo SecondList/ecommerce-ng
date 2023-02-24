@@ -12,7 +12,11 @@
             <ng-container *ngIf="isAuthenticated$ | async">
                 <button mat-button routerLink="/cart">
                     <mat-icon>shopping_cart</mat-icon>
-                    Cart
+                    My Cart
+                </button>
+                <button mat-button routerLink="/orders">
+                    <mat-icon>assignment</mat-icon>
+                    My Purchases
                 </button>
                 <button mat-button (click)="logout()">
                     <mat-icon>exit_to_app</mat-icon>

@@ -26,6 +26,17 @@ export class UserService {
     );
   }
 
+  public getUserOrders(pageSize: number, page: number): Observable<BaseResponse> {
+    return this._http.get<BaseResponse>(
+      `${this.getApiUrl()}\\order`,
+      {
+        params: new HttpParams()
+          .set('pageSize', pageSize)
+          .set('page', page)
+      }
+    );
+  }
+
   public getApiUrl() {
     return `${this._config.apiUrl}${this._userUrl}`;
   }

@@ -1,0 +1,17 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>My Purchases</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+        <ng-container *ngIf="orderBaseResponse$ | async as data">
+            <app-order *ngFor="let order of data.result" [orderId]="order.orderId"></app-order>
+
+            <div fxLayoutAlign="center end">
+                <mat-paginator [length]="data.totalCount" [pageSize]="data.pageSize" [pageIndex]="data.page"
+                    [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"
+                    (pageSize)="onPageChange($event)"></mat-paginator>
+            </div>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { BaseResponse } from 'src/app/models/base-response';
+import { Cart } from 'src/app/models/cart';
+import { checkout } from 'src/app/state/checkout/checkout.actions';
 import { retrieveCheckoutBaseResponse, retrieveCheckoutError } from 'src/app/state/checkout/checkout.selector';
 import { CheckoutState } from 'src/app/state/checkout/checkout.state';
 
@@ -19,48 +21,68 @@ export class CheckoutComponent {
   charMax2: number = 100;
   charMax3: number = 50;
   charMax4: number = 16;
+  checkOutCart!: Cart[];
 
   constructor(private fb: FormBuilder, private store: Store<{ checkoutState: CheckoutState }>) { }
 
   ngOnInit() {
     this.checkoutForm = this.fb.group({
-      firstName: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax1)])],
-      lastName: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax1)])],
-      receiptEmail: ['', [Validators.email]],
-      address: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax2)])],
-      city: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax3)])],
-      state: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax3)])],
-      postalCode: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax4)])],
-      country: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax1)])],
-      carrier: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax3)])],
-      cardNumber: ['', Validators.compose([Validators.required, this.creditCardValidator])],
-      cardName: ['', Validators.compose([Validators.required, Validators.maxLength(this.charMax1)])],
-      expiryMonth: ['', Validators.compose([Validators.required, Validators.min(1), Validators.max(12)])],
-      expiryYear: ['', Validators.compose([Validators.required, Validators.min(0), Validators.max(99)])],
-      cvc: ['', Validators.compose([Validators.required, Validators.pattern('^[0-9]{3,4}$')])],
+      firstName: ['', [Validators.required, Validators.maxLength(this.charMax1)]],
+      lastName: ['', [Validators.required, Validators.maxLength(this.charMax1)]],
+      receiptEmail: ['', [Validators.required, Validators.email]],
+      address: ['', [Validators.required, Validators.maxLength(this.charMax2)]],
+      city: ['', [Validators.required, Validators.maxLength(this.charMax3)]],
+      state: ['', [Validators.required]],
+      postalCode: ['', [Validators.required, Validators.maxLength(this.charMax4)]],
+      country: ['Malaysia', [Validators.required]],
+      carrier: ['POS Laju', [Validators.required]],
+      cardNumber: ['', [Validators.required, this.creditCardValidator]],
+      cardName: ['', [Validators.required, Validators.maxLength(this.charMax1)]],
+      expiryMonth: ['', [Validators.required, Validators.pattern('^(1[0-2])|([1-9])$')]],
+      expiryYear: ['', [Validators.required, Validators.pattern('^[0-9]{1,2}$')]],
+      cvc: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]],
     });
+
+    // this.checkoutForm = this.fb.group({
+    //   firstName: ['SK'],
+    //   lastName: ['Low'],
+    //   receiptEmail: ['sklow34@example.com'],
+    //   address: ['ABC'],
+    //   city: ['DEF'],
+    //   state: ['Kuala Lumpur'],
+    //   postalCode: ['68000'],
+    //   country: ['Malaysia', [Validators.required]],
+    //   carrier: ['POS Laju', [Validators.required]],
+    //   cardNumber: ['42'],
+    //   cardName: ['VISA TEST VARD'],
+    //   expiryMonth: ['1'],
+    //   expiryYear: ['2'],
+    //   cvc: ['343'],
+    // });
   }
 
   onSubmit() {
     const payload = {
+      productIds: this.checkOutCart.map(cart => cart.productId),
       firstName: this.checkoutForm?.value.firstName,
       lastName: this.checkoutForm?.value.lastName,
       receiptEmail: this.checkoutForm?.value.receiptEmail,
-      address: this.checkoutForm?.value.address,
+      address1: this.checkoutForm?.value.address,
       city: this.checkoutForm?.value.city,
       state: this.checkoutForm?.value.state,
       postalCode: this.checkoutForm?.value.postalCode,
       country: this.checkoutForm?.value.country,
       carrier: this.checkoutForm?.value.carrier,
-      cardNumber: this.checkoutForm?.value.cardNumber,
-      cardName: this.checkoutForm?.value.cardName,
-      expiryMonth: this.checkoutForm?.value.expiryMonth,
-      expiryYear: this.checkoutForm?.value.expiryYear,
-      cvc: this.checkoutForm?.value.cvc,
+      card: {
+        cardNumber: this.checkoutForm?.value.cardNumber,
+        cardName: this.checkoutForm?.value.cardName,
+        expMonth: this.checkoutForm?.value.expiryMonth,
+        expYear: this.checkoutForm?.value.expiryYear,
+        cvc: this.checkoutForm?.value.cvc
+      }
     };
 
-    console.log(payload);
-    // this.store.dispatch(register(payload));
+    this.store.dispatch(checkout(payload));
   }
 
   creditCardValidator(control: AbstractControl): ValidationErrors | null {
@@ -83,5 +105,9 @@ export class CheckoutComponent {
     } else {
       return { 'invalidCardNumber': true };
     }
+  }
+
+  onCart(carts: Cart[]) {
+    this.checkOutCart = carts;
   }
 }

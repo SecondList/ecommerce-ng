@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { Cart } from 'src/app/models/cart';
 import { initialState } from '../cart/cart.state';
-import { clearCartFailure, clearCartSuccess, createCartFailure, createCartSuccess, deleteCartFailure, deleteCartSuccess, loadCartFailure, loadCartSuccess, updateCartFailure, updateCartSuccess, updateSelectedCart } from './cart.actions';
+import { clearCartFailure, clearCartSuccess, createCartFailure, createCartSuccess, deleteCartFailure, loadCartFailure, loadCartSuccess, resetCart, updateCartFailure, updateCartSuccess, updateSelectedCart } from './cart.actions';
 
 export const cartReducer = createReducer(
     initialState,
@@ -73,5 +73,6 @@ export const cartReducer = createReducer(
             },
             error: null
         };
-    })
+    }),
+    on(resetCart, (state) => ({ ...state, carts: {} }))
 );

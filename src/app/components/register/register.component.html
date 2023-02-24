@@ -8,12 +8,14 @@
                 </mat-error>
                 <mat-error *ngIf="registrationForm.hasError('passwordMismatch')">Passwords do not match</mat-error>
                 <mat-form-field>
+                    <mat-label>Email</mat-label>
                     <input matInput placeholder="Email" formControlName="email">
                     <mat-error *ngIf="registrationForm.get('email')?.hasError('required')">Email is required</mat-error>
                     <mat-error *ngIf="registrationForm.get('email')?.hasError('email')">Invalid email
                         address</mat-error>
                 </mat-form-field>
                 <mat-form-field>
+                    <mat-label>Password</mat-label>
                     <input matInput type="password" placeholder="Password" formControlName="password">
                     <mat-error *ngIf="registrationForm.get('password')?.hasError('required')">Password is
                         required</mat-error>
@@ -22,6 +24,7 @@
                         characters</mat-error>
                 </mat-form-field>
                 <mat-form-field>
+                    <mat-label>Confirm password</mat-label>
                     <input matInput type="password" placeholder="Confirm Password" formControlName="confirmPassword">
                     <mat-error *ngIf="registrationForm.get('confirmPassword')?.hasError('required')">Comfirm Password is
                         required</mat-error>

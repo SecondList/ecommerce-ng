@@ -7,11 +7,13 @@
           The username and password were not recognized
         </mat-error>
         <mat-form-field>
+          <mat-label>Email</mat-label>
           <input matInput placeholder="Email" formControlName="email">
           <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
           <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email address</mat-error>
         </mat-form-field>
         <mat-form-field>
+          <mat-label>Password</mat-label>
           <input matInput type="password" placeholder="Password" formControlName="password">
           <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
           <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at least 8

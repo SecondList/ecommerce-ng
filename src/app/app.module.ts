@@ -45,8 +45,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
 import { ClearCartComponent } from './components/clear-cart/clear-cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { CheckoutCartComponent } from './components/checkout-cart/checkout-cart.component';
+import { CheckoutSuccessfulComponent } from './components/checkout-successful/checkout-successful.component';
+import { OrderListComponent } from './components/order-list/order-list.component';
+import { OrderComponent } from './components/order/order.component';
+import { orderReducer } from './state/order/order.reducer';
+import { OrderEffect } from './state/order/order.effect';
 
 @NgModule({
   declarations: [
@@ -63,13 +70,17 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     UpdateOrderQuantityComponent,
     ClearCartComponent,
     CheckoutComponent,
+    CheckoutCartComponent,
+    CheckoutSuccessfulComponent,
+    OrderListComponent,
+    OrderComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer, productCategoryState: productCategoryReducer, cartState: cartReducer, checkoutState: checkoutReducer }),
-    EffectsModule.forRoot([ProductEffect, AuthEffect, ProductCategoryEffect, CartEffect, CheckoutEffect]),
+    StoreModule.forRoot({ productState: productReducer, authState: authReducer, spinnerState: spinnerReducer, productCategoryState: productCategoryReducer, cartState: cartReducer, checkoutState: checkoutReducer, orderState: orderReducer }),
+    EffectsModule.forRoot([ProductEffect, AuthEffect, ProductCategoryEffect, CartEffect, CheckoutEffect, OrderEffect]),
     StoreDevtoolsModule.instrument({ name: 'NgRx Store Ecommerce App', maxAge: 25, logOnly: !isDevMode() }),
     FormsModule,
     ReactiveFormsModule,
@@ -87,6 +98,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     MatPaginatorModule,
     MatSnackBarModule,
     MatCheckboxModule,
+    MatSelectModule,
     BrowserAnimationsModule
   ],
   providers: [{

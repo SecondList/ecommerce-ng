@@ -1,22 +1,24 @@
 <!-- <mat-table [dataSource]="dataSource" fxShow="false" fxShow.gt-sm> -->
 <mat-card>
     <mat-card-content>
-        <h2>My Cart</h2>
+        <mat-card-header>
+            <mat-card-title>My Cart</mat-card-title>
+        </mat-card-header>
         <mat-table [dataSource]="dataSource">
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef>
+                <mat-header-cell *matHeaderCellDef ngClass="width-8-percent">
                     <mat-checkbox (change)="$event ? toggleAllRows() : null"
                         [checked]="selection.hasValue() && isAllSelected()"
                         [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
                     </mat-checkbox>
                 </mat-header-cell>
-                <mat-cell *matCellDef="let item">
+                <mat-cell *matCellDef="let item" ngClass="width-8-percent">
                     <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(item) : null"
                         [checked]="selection.isSelected(item)" [aria-label]="checkboxLabel(item)">
                     </mat-checkbox>
                 </mat-cell>
-                <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+                <mat-footer-cell *matFooterCellDef ngClass="width-8-percent">Total</mat-footer-cell>
             </ng-container>
 
             <ng-container matColumnDef="title">
@@ -24,40 +26,40 @@
                 <mat-cell *matCellDef="let item">
                     <img [src]="item.product.imagePath" alt="{{item.product.title}}" width="50" height="50"
                         style="margin-right: 8px;">
-                    {{item.productId}}{{ item.product.title }}
+                    {{ item.product.title }}
                 </mat-cell>
                 <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
 
             <ng-container matColumnDef="price">
-                <mat-header-cell *matHeaderCellDef>Price (RM)</mat-header-cell>
-                <mat-cell *matCellDef="let item">{{ item.product.price | currency:'MYR':'symbol':'1.2-2' }}</mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent">Price (RM)</mat-header-cell>
+                <mat-cell *matCellDef="let item" ngClass="width-15-percent">{{ item.product.price | currency:'MYR':'symbol':'1.2-2' }}</mat-cell>
+                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent"></mat-footer-cell>
             </ng-container>
 
             <ng-container matColumnDef="orderQty">
-                <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
-                <mat-cell *matCellDef="let item">
+                <mat-header-cell *matHeaderCellDef ngClass="width-20-percent">Quantity</mat-header-cell>
+                <mat-cell *matCellDef="let item" ngClass="width-20-percent">
                     <app-update-order-quantity [productId]="item.productId"></app-update-order-quantity>
                 </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                <mat-footer-cell *matFooterCellDef ngClass="width-20-percent"></mat-footer-cell>
             </ng-container>
 
             <ng-container matColumnDef="totalPrice">
-                <mat-header-cell *matHeaderCellDef>Total Price (RM)</mat-header-cell>
-                <mat-cell *matCellDef="let item">{{item.product.price * item.orderQty |
+                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent">Total Price (RM)</mat-header-cell>
+                <mat-cell *matCellDef="let item" ngClass="width-15-percent">{{item.product.price * item.orderQty |
                     currency:'MYR':'symbol':'1.2-2'}}</mat-cell>
-                <mat-footer-cell *matFooterCellDef>{{checkOutTotalPrice() |
+                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent">{{checkOutTotalPrice() |
                     currency:'MYR':'symbol':'1.2-2'}}</mat-footer-cell>
             </ng-container>
 
             <ng-container matColumnDef="action">
-                <mat-header-cell *matHeaderCellDef><app-clear-cart></app-clear-cart></mat-header-cell>
-                <mat-cell *matCellDef="let item">
+                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent"><app-clear-cart></app-clear-cart></mat-header-cell>
+                <mat-cell *matCellDef="let item" ngClass="width-15-percent">
                     <app-delete-from-cart [productId]="item.productId"></app-delete-from-cart>
                 </mat-cell>
-                <mat-footer-cell *matFooterCellDef><button mat-raised-button color="primary"
-                        (click)="toCheckOut()">Check
+                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent">
+                    <button mat-raised-button color="primary" (click)="toCheckOut()" [disabled]="selection.isEmpty()">Check
                         Out</button></mat-footer-cell>
             </ng-container>
 

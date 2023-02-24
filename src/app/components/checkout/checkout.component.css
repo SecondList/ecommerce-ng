@@ -1,5 +1,6 @@
 mat-card {
-    max-width: 90%;
+    max-width: 95%;
+    width: 95%;
     margin: 1em auto;
     text-align: center;
 }
@@ -7,4 +8,15 @@ mat-card {
 mat-form-field {
     display: block;
     /* max-width: 40%; */
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

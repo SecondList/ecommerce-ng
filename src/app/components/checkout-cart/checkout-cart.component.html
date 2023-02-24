@@ -1,0 +1,38 @@
+<mat-card [ngClass]="{'folded': isFolded}">
+    <mat-card-header (click)="toggleFold()">
+        <mat-card-title><mat-icon>keyboard_arrow_right</mat-icon>Order Summary</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="title">
+                <mat-header-cell *matHeaderCellDef>Product</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    <img [src]="item.product.imagePath" alt="{{item.product.title}}" width="50" height="50"
+                        style="margin-right: 8px;">
+                    {{ item.product.title }}
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="orderQty">
+                <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                <mat-cell *matCellDef="let item">
+                    {{item.orderQty}}
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="totalPrice">
+                <mat-header-cell *matHeaderCellDef>Total Price (RM)</mat-header-cell>
+                <mat-cell *matCellDef="let item">{{item.product.price * item.orderQty |
+                    currency:'MYR':'symbol':'1.2-2'}}</mat-cell>
+                <mat-footer-cell *matFooterCellDef>{{checkOutTotalPrice |
+                    currency:'MYR':'symbol':'1.2-2'}}</mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

@@ -12,3 +12,7 @@ export const retrieveAuthError = createSelector(
     selectAuthEntity,
     (state: AuthState) => state.error
 );
+export const selectIsRegistered = createSelector(
+    selectAuthEntity,
+    (state: AuthState) => state.registered
+);

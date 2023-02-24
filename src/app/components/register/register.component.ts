@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { register } from 'src/app/state/auth/auth.actions';
+import { retrieveAuthError, selectIsRegistered } from 'src/app/state/auth/auth.selector';
 import { AuthState } from 'src/app/state/auth/auth.state';
 
 @Component({
@@ -12,12 +13,8 @@ import { AuthState } from 'src/app/state/auth/auth.state';
 })
 export class RegisterComponent {
   registrationForm!: FormGroup;
-  authError$: Observable<string> = this.store.pipe(
-    select((state) => state.authState.error)
-  );
-  registered$: Observable<boolean> = this.store.pipe(
-    select((state) => state.authState.registered)
-  );
+  authError$: Observable<string> = this.store.pipe(select(retrieveAuthError));
+  registered$: Observable<boolean> = this.store.pipe(select(selectIsRegistered));
 
   constructor(private fb: FormBuilder, private store: Store<{ authState: AuthState }>) { }
 

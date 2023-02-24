@@ -1,0 +1,25 @@
+mat-card-title {
+    text-align: center;
+}
+
+mat-card {
+    max-width: 95%;
+    margin: 1em auto;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+mat-card.folded mat-card-content {
+    height: 0;
+    opacity: 0;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: height 0.2s, opacity 0.2s, transform 0.2s;
+}
+
+mat-card-header {
+    cursor: pointer;
+}

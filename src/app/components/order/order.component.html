@@ -1,0 +1,134 @@
+<ng-container *ngIf="order$ | async as order">
+
+    <mat-card [ngClass]="{'folded': isFolded}">
+        <mat-card-header (click)="toggleFold()">
+            <mat-card-title><mat-icon>keyboard_arrow_right</mat-icon>Reference number: {{order.orderId}} order
+                summary</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card ngClass="product-detail">
+                <mat-card-header>
+                    <mat-card-title>Product Detail</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="content">
+                        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                                *ngFor="let orderDetail of order.orderDetails">
+                                <mat-card fxFlex="100%" fxLayout="column">
+                                    <img mat-card-image [src]="orderDetail.product.imagePath"
+                                        [alt]="orderDetail.product.title">
+                                    <mat-card-content fxFlex="100%" fxLayout="column">
+                                        <p fxFlex="100%" mat-card-title>{{ orderDetail.product.title }}</p>
+                                        <p mat-card-subtitle>{{orderDetail.orderQty}} items.</p>
+                                        <p mat-card-subtitle>{{ orderDetail.price * orderDetail.orderQty |
+                                            currency:'MYR':'symbol':'1.2-2'}}</p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card ngClass="payment-detail">
+                <mat-card-header>
+                    <mat-card-title>Payment Detail</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="content">
+                        <div fxLayout="column">
+                            <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>Payment method</mat-label>
+                                    <input matInput placeholder="Payment method"
+                                        [(ngModel)]="order.payment.paymentMethod" [disabled]="true">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>Amount</mat-label>
+                                    <input matInput placeholder="Amount"
+                                        value="{{order.payment.amount | currency:'MYR':'symbol':'1.2-2'}}"
+                                        [disabled]="true">
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-label>Payment date</mat-label>
+                                <input matInput placeholder="Payment date"
+                                    value="{{order.payment.paymentDate | date:'medium'}}" [disabled]="true">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card ngClass="shipment-detail">
+                <mat-card-header>
+                    <mat-card-title>Shipment Detail</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="content">
+                        <div fxLayout="column">
+                            <mat-form-field fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-label>Tracking number</mat-label>
+                                <input matInput placeholder="Tracking number"
+                                    [(ngModel)]="order.shipment.trackingNumber" [disabled]="true">
+                            </mat-form-field>
+                            <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>First name</mat-label>
+                                    <input matInput placeholder="First name" [(ngModel)]="order.shipment.firstName"
+                                        [disabled]="true">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>Last name</mat-label>
+                                    <input matInput placeholder="Last name" [(ngModel)]="order.shipment.lastName"
+                                        [disabled]="true">
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-label>Receipient email</mat-label>
+                                <input matInput placeholder="Receipient email" [(ngModel)]="order.shipment.receiptEmail"
+                                    [disabled]="true">
+                            </mat-form-field>
+                            <mat-form-field fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-label>Address</mat-label>
+                                <input matInput placeholder="Address" [(ngModel)]="order.shipment.address1"
+                                    [disabled]="true">
+                            </mat-form-field>
+                            <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>Postal code</mat-label>
+                                    <input matInput placeholder="Postal code" [(ngModel)]="order.shipment.postalCode"
+                                        [disabled]="true">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>City</mat-label>
+                                    <input matInput placeholder="City" [(ngModel)]="order.shipment.city"
+                                        [disabled]="true">
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row wrap" fxLayoutGap="16px grid" fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>State/territory</mat-label>
+                                    <input matInput placeholder="State/Terengganu" [(ngModel)]="order.shipment.state"
+                                        [disabled]="true">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="50%">
+                                    <mat-label>Country</mat-label>
+                                    <input matInput placeholder="Country" [(ngModel)]="order.shipment.country"
+                                        [disabled]="true">
+                                </mat-form-field>
+                            </div>
+                            <mat-form-field fxFlex.xs="100%" fxFlex.sm="33%">
+                                <mat-label>Carrier</mat-label>
+                                <input matInput placeholder="carrier" [(ngModel)]="order.shipment.carrier"
+                                    [disabled]="true">
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+
+</ng-container>

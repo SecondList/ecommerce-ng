@@ -26,5 +26,5 @@ export const selectPage = createSelector(
 );
 export const selectCheckOutCart = createSelector(
     selectCartEntity,
-    (state: CartState) => state.carts.result.filter((cart: Cart) => cart.selected === true)
+    (state: CartState) => state.carts.result?.filter((cart: Cart) => cart.selected === true)
 );
