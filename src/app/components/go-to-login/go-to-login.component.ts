@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-go-to-login',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./go-to-login.component.css']
 })
 export class GoToLoginComponent {
+  getCurrentUrl(): string {
+    return this.router.url;
+  }
 
-  constructor() { }
+  constructor(private router: Router) { }
 }

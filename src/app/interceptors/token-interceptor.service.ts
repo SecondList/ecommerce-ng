@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable, first, mergeMap, of, catchError, throwError } from 'rxjs';
 import { logoutSuccess } from '../state/auth/auth.actions';
 import { retrieveToken } from '../state/auth/auth.selector';
@@ -11,7 +12,7 @@ import { retrieveToken } from '../state/auth/auth.selector';
 })
 export class TokenInterceptorService implements HttpInterceptor {
 
-  constructor(private store$: Store<any>, private router: Router) { }
+  constructor(private store$: Store<any>, private router: Router, private cookieService: CookieService) { }
 
   /**
      * Intercepts all HTTP requests and adds the JWT token to the request's header if the URL
@@ -29,8 +30,8 @@ export class TokenInterceptorService implements HttpInterceptor {
               case 401:
                 this.store$.dispatch(logoutSuccess());
                 message = "Please login";
-                localStorage.removeItem('userToken');
-                this.router.navigate(['/login']);
+                this.cookieService.delete('userToken');
+                this.cookieService.delete('refreshToken');
                 break;
               case 403:
                 message = "You not allowed to perform this action!";
@@ -64,7 +65,7 @@ export class TokenInterceptorService implements HttpInterceptor {
             },
           });
         } else {
-          console.warn(`Invalid token!!! Cannot use token "${token}".`);
+          console.warn(`Cannot use token "${token}".`);
         }
         return of(request);
       })

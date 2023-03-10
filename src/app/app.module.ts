@@ -8,6 +8,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { AddCartButtonComponent } from './components/add-cart-button/add-cart-button.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -54,6 +55,8 @@ import { OrderListComponent } from './components/order-list/order-list.component
 import { OrderComponent } from './components/order/order.component';
 import { orderReducer } from './state/order/order.reducer';
 import { OrderEffect } from './state/order/order.effect';
+import { NotfoundComponent } from './components/notfound/notfound.component';
+import { jwtHelperFactory } from './services/jwt-helper.service';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,7 @@ import { OrderEffect } from './state/order/order.effect';
     CheckoutSuccessfulComponent,
     OrderListComponent,
     OrderComponent,
+    NotfoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,11 +105,10 @@ import { OrderEffect } from './state/order/order.effect';
     MatSelectModule,
     BrowserAnimationsModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: TokenInterceptorService,
-    multi: true,
-  }],
+  providers: [
+    { provide: JwtHelperService, useFactory: jwtHelperFactory }, // add JwtHelperService provider
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
