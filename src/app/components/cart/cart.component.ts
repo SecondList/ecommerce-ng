@@ -19,7 +19,7 @@ export class CartComponent {
   cartBaseResponse$!: Observable<BaseResponse>;
   pageSizeOptions = [10, 20];
 
-  displayedColumns: string[] = ['select', 'title', 'price', 'orderQty', 'totalPrice', 'action'];
+  displayedColumns: string[] = ['title'];
   dataSource!: MatTableDataSource<Cart>;
   selection: SelectionModel<Cart> = new SelectionModel<Cart>(true, []);
 
@@ -88,7 +88,7 @@ export class CartComponent {
   }
 
   toCheckOut() {
-    this.store.dispatch(updateSelectedCart({selectedCarts: this.selection.selected}));
+    this.store.dispatch(updateSelectedCart({ selectedCarts: this.selection.selected }));
     this.router.navigate(['/checkout']);
   }
 }

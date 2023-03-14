@@ -17,8 +17,10 @@ export class OrderEffect {
     loadOrder$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(loadOrder),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ pageSize, page }) => {
-                this.store.dispatch(showSpinner());
                 pageSize = isNaN(pageSize) ? 10 : pageSize;
                 page = isNaN(page) ? 1 : page;
 
@@ -51,15 +53,16 @@ export class OrderEffect {
                         };
                     }),
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         return loadOrderSuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(loadOrderFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );

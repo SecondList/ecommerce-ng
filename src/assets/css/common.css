@@ -1,0 +1,36 @@
+mat-paginator {
+    display: flex;
+    justify-content: center;
+}
+
+mat-card-title {
+    text-align: center;
+}
+
+mat-card {
+    max-width: 95%;
+    margin: 1em auto;
+    text-align: center;
+}
+
+mat-form-field {
+    display: block;
+}
+
+.width-8-percent {
+    flex: 0 0 8%;
+}
+
+.width-15-percent {
+    flex: 0 0 15%;
+}
+
+.width-20-percent {
+    flex: 0 0 20%;
+}
+
+.product-image {
+    width: 150px;
+    height: 150px;
+    margin-right: 8px;
+}

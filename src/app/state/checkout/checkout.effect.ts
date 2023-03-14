@@ -20,8 +20,10 @@ export class CheckoutEffect {
     checkout$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(checkout),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ productIds, firstName, lastName, receiptEmail, address1, city, state, postalCode, country, carrier, card }) => {
-                this.store.dispatch(showSpinner());
                 return this.checkoutService.checkout(productIds, firstName, lastName, receiptEmail, address1, city, state, postalCode, country, carrier, card).pipe(
                     map((baseResponse) => {
                         const formattedOrderDetails = baseResponse.result.orderDetails.map((orderDetail: OrderDetail) => {
@@ -36,7 +38,6 @@ export class CheckoutEffect {
                             }
                         });
 
-                        this.store.dispatch(hideSpinner());
                         this.store.dispatch(resetCart());
                         this.store.dispatch(loadOrderSuccess({
                             baseResponse: {
@@ -52,11 +53,13 @@ export class CheckoutEffect {
                         return checkoutSuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(checkoutFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );

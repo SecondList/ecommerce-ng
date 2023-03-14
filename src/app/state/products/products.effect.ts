@@ -17,8 +17,10 @@ export class ProductEffect {
     loadProduct$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(loadProduct),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ categoryId, pageSize, page }) => {
-                this.store.dispatch(showSpinner());
                 let service: Observable<any>;
                 pageSize = isNaN(pageSize) ? 10 : pageSize;
                 page = isNaN(page) ? 1 : page;
@@ -48,16 +50,17 @@ export class ProductEffect {
                         };
                     }),
                     map(baseResponse => {
-                        this.store.dispatch(hideSpinner());
                         return loadProductSuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(loadProductFailure({ error: error }));
                     })
                 )
             }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
+            })
             //tap((payload) => console.log(payload))
         )
     );
@@ -69,7 +72,7 @@ export class ProductEffect {
                 this.productService.createProduct(product).pipe(
                     map((product) => createProductSuccess({ product: product })),
                     catchError((error) => {
-                        this.snackBar.open(error!, 'Close', {duration: 5000});
+                        this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(createProductFailure({ error: error }))
                     })
                 )

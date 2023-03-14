@@ -1,0 +1,26 @@
+.button-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.quantity-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: stretch;
+  flex: 0 auto auto;
+  width: 100%;
+}
+
+.quantity-button {
+  width: 5px;
+  min-width: auto;
+  max-width: auto;
+}
+
+.quantity-text {
+  width: 30%;
+  min-width: auto;
+  max-width: auto;
+}

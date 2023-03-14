@@ -1,10 +1,10 @@
-<mat-toolbar color="primary" fxLayout="column">
+<mat-toolbar color="primary" ngClass="flex-column-left">
     <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
         <span>
             <button mat-button routerLink="/products">{{toolbarTitle}}</button>
             <button mat-button routerLink="/products"><mat-icon>home</mat-icon></button>
         </span>
-        <div fxLayout="row">
+        <div fxShow="false" fxLayout="row" fxShow.gt-sm>
             <ng-container *ngIf="!(isAuthenticated$ | async)">
                 <app-go-to-login></app-go-to-login>
                 <app-go-to-register></app-go-to-register>
@@ -24,25 +24,50 @@
                 </button>
             </ng-container>
         </div>
+        <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+            <mat-icon>menu</mat-icon>
+        </button>
     </mat-toolbar-row>
-    <mat-toolbar-row>
-        <!-- <ng-container *ngIf="productCategory$ | async as productCategories"> -->
-        <div fxShow="false" fxLayout="row wrap" fxShow.gt-sm>
+    <mat-toolbar-row fxShow="false" fxShow.gt-sm>
+        <div class="product-categories">
             <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
                 <button mat-button [routerLink]="['/products/', productCategory.categoryId]">
                     {{productCategory.categoryName}}
                 </button>
             </ng-container>
         </div>
-        <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
-            <mat-icon>menu</mat-icon>
-        </button>
     </mat-toolbar-row>
 </mat-toolbar>
 <mat-menu x-position="before" #menu="matMenu">
+    <ng-container *ngIf="!(isAuthenticated$ | async)">
+        <div ngClass="flex-column-left">
+            <button mat-menu-item>
+                <app-go-to-login></app-go-to-login>
+            </button>
+            <button mat-menu-item>
+                <app-go-to-register></app-go-to-register>
+            </button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="isAuthenticated$ | async">
+        <button mat-menu-item routerLink="/cart">
+            <mat-icon>shopping_cart</mat-icon>
+            My Cart
+        </button>
+        <button mat-menu-item routerLink="/orders">
+            <mat-icon>assignment</mat-icon>
+            My Purchases
+        </button>
+    </ng-container>
     <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
         <button mat-menu-item [routerLink]="['/products/', productCategory.categoryId]">
             {{productCategory.categoryName}}
+        </button>
+    </ng-container>
+    <ng-container *ngIf="isAuthenticated$ | async">
+        <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            Logout
         </button>
     </ng-container>
 </mat-menu>

@@ -1,11 +1,13 @@
-<mat-form-field fxLayout="column">
-    <div fxFlex="100%" fxLayout="row">
-        <button fxFlex="20%" mat-flat-button color="primary" (click)="decrement()"><mat-icon>remove</mat-icon></button>
-        <input fxFlex="20%" matInput type="number" [(ngModel)]="inputOrderQty" [min]="minOrderQty" [max]="maxOrderQty"
-            [(ngModel)]="orderQty" (blur)="inputChanged()">
-        <button fxFlex="20%" mat-flat-button color="primary" (click)="increment()"><mat-icon>add</mat-icon></button>
-    </div>
-    <mat-error *ngIf="orderQty < minOrderQty || orderQty > maxOrderQty">
-        {{minOrderQty}} to {{maxOrderQty}}
-    </mat-error>
-</mat-form-field>
+<div ngClass="quantity-container">
+    <button ngClass="quantity-input-field quantity-button" mat-flat-button color="primary"
+        (click)="decrement()">-</button>
+    <mat-form-field>
+        <input ngClass="quantity-input-field quantity-text" matInput type="number" [(ngModel)]="inputOrderQty"
+            [min]="minOrderQty" [max]="maxOrderQty" [(ngModel)]="orderQty" (blur)="inputChanged()">
+    </mat-form-field>
+    <button ngClass="quantity-input-field quantity-button" mat-flat-button color="primary"
+        (click)="increment()">+</button>
+</div>
+<mat-error *ngIf="orderQty < minOrderQty || orderQty > maxOrderQty">
+    {{minOrderQty}} to {{maxOrderQty}}
+</mat-error>

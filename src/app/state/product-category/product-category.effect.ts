@@ -15,21 +15,19 @@ export class ProductCategoryEffect {
     loadProductCategory$: Observable<Action> = createEffect(() =>
         this.action$.pipe(
             ofType(loadProductCategory),
+            // tap(() => this.store.dispatch(showSpinner())),
             mergeMap(() => {
-                this.store.dispatch(showSpinner());
-
                 return this.productCategoryService.getProductCategories().pipe(
                     map(baseResponse => {
-                        this.store.dispatch(hideSpinner());
                         return loadProductCategorySuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', {duration: 5000});
                         return of(loadProductCategoryFailure({ error: error }));
                     })
                 )
-            })
+            }),
+            // tap(() => this.store.dispatch(hideSpinner()))
         )
     );
 

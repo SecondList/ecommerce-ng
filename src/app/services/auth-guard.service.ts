@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
+import { logoutSuccess } from '../state/auth/auth.actions';
 import { retrieveToken } from '../state/auth/auth.selector';
 import { AuthState } from '../state/auth/auth.state';
 import { AuthService } from './auth.service';

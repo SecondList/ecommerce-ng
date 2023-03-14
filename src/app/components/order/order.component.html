@@ -2,26 +2,33 @@
 
     <mat-card [ngClass]="{'folded': isFolded}">
         <mat-card-header (click)="toggleFold()">
-            <mat-card-title><mat-icon>keyboard_arrow_right</mat-icon>Reference number: {{order.orderId}} order
+            <mat-card-title ngClass.lt-md="md-title-font-size"><mat-icon>keyboard_arrow_right</mat-icon>Reference
+                number: {{order.orderId}} order
                 summary</mat-card-title>
         </mat-card-header>
         <mat-card-content>
             <mat-card ngClass="product-detail">
                 <mat-card-header>
-                    <mat-card-title>Product Detail</mat-card-title>
+                    <mat-card-title ngClass.lt-md="md-title-font-size">Product Detail</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="content">
                         <div fxLayout="row wrap" fxLayoutGap="16px grid">
-                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%"
+                            <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="25%"
                                 *ngFor="let orderDetail of order.orderDetails">
                                 <mat-card fxFlex="100%" fxLayout="column">
-                                    <img mat-card-image [src]="orderDetail.product.imagePath"
-                                        [alt]="orderDetail.product.title">
+                                    <div class="align-center">
+                                        <img mat-card-image [src]="orderDetail.product.imagePath"
+                                            [alt]="orderDetail.product.title" ngClass.gt-xs="product-image"
+                                            ngClass.xs="product-image-xs">
+                                    </div>
                                     <mat-card-content fxFlex="100%" fxLayout="column">
-                                        <p fxFlex="100%" mat-card-title>{{ orderDetail.product.title }}</p>
-                                        <p mat-card-subtitle>{{orderDetail.orderQty}} items.</p>
-                                        <p mat-card-subtitle>{{ orderDetail.price * orderDetail.orderQty |
+                                        <p fxFlex="100%" mat-card-title ngClass.lt-md="md-title-font-size">{{
+                                            orderDetail.product.title }}</p>
+                                        <p mat-card-subtitle ngClass.lt-md="md-subtitle-font-size">
+                                            {{orderDetail.orderQty}} items.</p>
+                                        <p mat-card-subtitle ngClass.lt-md="md-subtitle-font-size">{{ orderDetail.price
+                                            * orderDetail.orderQty |
                                             currency:'MYR':'symbol':'1.2-2'}}</p>
                                     </mat-card-content>
                                 </mat-card>
@@ -33,7 +40,7 @@
 
             <mat-card ngClass="payment-detail">
                 <mat-card-header>
-                    <mat-card-title>Payment Detail</mat-card-title>
+                    <mat-card-title ngClass.lt-md="md-title-font-size">Payment Detail</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="content">
@@ -63,7 +70,7 @@
 
             <mat-card ngClass="shipment-detail">
                 <mat-card-header>
-                    <mat-card-title>Shipment Detail</mat-card-title>
+                    <mat-card-title ngClass.lt-md="md-title-font-size">Shipment Detail</mat-card-title>
                 </mat-card-header>
                 <mat-card-content>
                     <div class="content">

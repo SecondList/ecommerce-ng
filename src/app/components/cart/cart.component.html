@@ -1,66 +1,65 @@
 <!-- <mat-table [dataSource]="dataSource" fxShow="false" fxShow.gt-sm> -->
-<mat-card>
-    <mat-card-content>
-        <mat-card-header>
+<mat-card ngClass.lt-md="clear-margin">
+    <mat-card-content ngClass.lt-md="clear-padding">
+        <mat-card-header ngClass.lt-md="clear-top-padding">
             <mat-card-title>My Cart</mat-card-title>
         </mat-card-header>
-        <mat-table [dataSource]="dataSource">
-            <!-- Checkbox Column -->
-            <ng-container matColumnDef="select">
-                <mat-header-cell *matHeaderCellDef ngClass="width-8-percent">
-                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-                    </mat-checkbox>
-                </mat-header-cell>
-                <mat-cell *matCellDef="let item" ngClass="width-8-percent">
-                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(item) : null"
-                        [checked]="selection.isSelected(item)" [aria-label]="checkboxLabel(item)">
-                    </mat-checkbox>
-                </mat-cell>
-                <mat-footer-cell *matFooterCellDef ngClass="width-8-percent">Total</mat-footer-cell>
-            </ng-container>
-
+        <mat-table [dataSource]="dataSource" ngClass.lt-md="table-lt-md">
             <ng-container matColumnDef="title">
-                <mat-header-cell *matHeaderCellDef>Product</mat-header-cell>
-                <mat-cell *matCellDef="let item">
-                    <img [src]="item.product.imagePath" alt="{{item.product.title}}" width="50" height="50"
-                        style="margin-right: 8px;">
-                    {{ item.product.title }}
+                <mat-header-cell *matHeaderCellDef class="flex-row-space-between" ngClass.lt-md="clear-padding">
+                    <div>
+                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                        <span>Product</span>
+                    </div>
+                    <div>
+                        <app-clear-cart></app-clear-cart>
+                    </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let item" class="flex-column" ngClass.lt-md="clear-padding">
+                    <div class="cart-action flex-row-space-between">
+                        <div>
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                (change)="$event ? selection.toggle(item) : null" [checked]="selection.isSelected(item)"
+                                [aria-label]="checkboxLabel(item)">
+                            </mat-checkbox>
+                        </div>
+                        <div>
+                            <app-delete-from-cart [productId]="item.productId"></app-delete-from-cart>
+                        </div>
+                    </div>
+                    <div ngClass="product-container">
+                        <div ngClass="image-container">
+                            <img [src]="item.product.imagePath" alt="{{item.product.title}}"
+                                ngClass.gt-xs="product-image" ngClass.xs="product-image-xs">
+                        </div>
+                        <div ngClass="order-detail-container">
+                            <div>{{ item.product.title }}</div>
+                            <div>&nbsp;</div>
+                            <div>{{ item.product.price |
+                                currency:'MYR':'symbol':'1.2-2' }}</div>
+                            <div><app-update-order-quantity [productId]="item.productId"></app-update-order-quantity>
+                            </div>
+                            <div>{{item.product.price *
+                                item.orderQty |
+                                currency:'MYR':'symbol':'1.2-2'}}</div>
+                        </div>
+                    </div>
                 </mat-cell>
-                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="price">
-                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent">Price (RM)</mat-header-cell>
-                <mat-cell *matCellDef="let item" ngClass="width-15-percent">{{ item.product.price | currency:'MYR':'symbol':'1.2-2' }}</mat-cell>
-                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent"></mat-footer-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="orderQty">
-                <mat-header-cell *matHeaderCellDef ngClass="width-20-percent">Quantity</mat-header-cell>
-                <mat-cell *matCellDef="let item" ngClass="width-20-percent">
-                    <app-update-order-quantity [productId]="item.productId"></app-update-order-quantity>
-                </mat-cell>
-                <mat-footer-cell *matFooterCellDef ngClass="width-20-percent"></mat-footer-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="totalPrice">
-                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent">Total Price (RM)</mat-header-cell>
-                <mat-cell *matCellDef="let item" ngClass="width-15-percent">{{item.product.price * item.orderQty |
-                    currency:'MYR':'symbol':'1.2-2'}}</mat-cell>
-                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent">{{checkOutTotalPrice() |
-                    currency:'MYR':'symbol':'1.2-2'}}</mat-footer-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="action">
-                <mat-header-cell *matHeaderCellDef ngClass="width-15-percent"><app-clear-cart></app-clear-cart></mat-header-cell>
-                <mat-cell *matCellDef="let item" ngClass="width-15-percent">
-                    <app-delete-from-cart [productId]="item.productId"></app-delete-from-cart>
-                </mat-cell>
-                <mat-footer-cell *matFooterCellDef ngClass="width-15-percent">
-                    <button mat-raised-button color="primary" (click)="toCheckOut()" [disabled]="selection.isEmpty()">Check
-                        Out</button></mat-footer-cell>
+                <mat-footer-cell *matFooterCellDef class="flex-row-space-between" ngClass.lt-md="clear-padding">
+                    <div>
+                        <span>Total:&nbsp;</span>
+                        <span>{{checkOutTotalPrice() |
+                            currency:'MYR':'symbol':'1.2-2'}}</span>
+                    </div>
+                    <div>
+                        <button mat-raised-button color="primary" (click)="toCheckOut()"
+                            [disabled]="selection.isEmpty()">Check
+                            Out</button>
+                    </div>
+                </mat-footer-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -69,26 +68,6 @@
         </mat-table>
 
         <ng-container *ngIf="(cartBaseResponse$ | async) as data">
-            <!-- <div fxLayout="column" fxHide="false" fxHide.gt-sm>
-        <div class="content">
-            <div fxLayout="column" fxLayoutGap="16px grid">
-                <div *ngFor="let cart of data.result">
-                    <mat-card fxFlex="100%" fxLayout="column">
-                        <img mat-card-image [src]="cart.product.imagePath" [alt]="cart.product.title" width="50%" height="50%">
-                        <mat-card-content fxFlex="100%" fxLayout="column">
-                            <p fxFlex="100%" mat-card-title>{{ cart.product.title }}</p>
-                            <p mat-card-subtitle>{{ cart.product.price | currency:'MYR':'symbol':'1.2-2' }}</p>
-                        </mat-card-content>
-                        <mat-card-actions fxLayout="row">
-                            <app-update-order-quantity [productId]="cart.productId"></app-update-order-quantity>
-                            <app-delete-from-cart [productId]="cart.productId"></app-delete-from-cart>
-                        </mat-card-actions>
-                    </mat-card>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
             <div fxLayoutAlign="center end">
                 <mat-paginator [length]="data.totalCount" [pageSize]="data.pageSize" [pageIndex]="data.page"
                     [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"

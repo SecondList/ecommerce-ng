@@ -17,20 +17,23 @@ export class CartEffect {
     addToCart$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(createCart),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ productId, orderQty }) => {
-                this.store.dispatch(showSpinner());
                 return this.cartService.addToCart(productId, orderQty).pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return createCartSuccess({ cart: baseResponse.result });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(createCartFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );
@@ -38,8 +41,10 @@ export class CartEffect {
     loadCart$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(loadCart),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ pageSize, page }) => {
-                this.store.dispatch(showSpinner());
                 pageSize = isNaN(pageSize) ? 10 : pageSize;
                 page = isNaN(page) ? 1 : page;
 
@@ -65,15 +70,16 @@ export class CartEffect {
                         };
                     }),
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         return loadCartSuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(loadCartFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );
@@ -81,20 +87,23 @@ export class CartEffect {
     updateCart$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(updateCart),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ productId, orderQty }) => {
-                this.store.dispatch(showSpinner());
                 return this.cartService.updateOrderQty(productId, orderQty).pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return updateCartSuccess({ baseResponse: baseResponse });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(updateCartFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );
@@ -102,20 +111,23 @@ export class CartEffect {
     deleteCart$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(deleteCart),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(({ productId }) => {
-                this.store.dispatch(showSpinner());
                 return this.cartService.deleteFromCart(productId).pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return deleteCartSuccess({ productId: productId });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(deleteCartFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );
@@ -132,20 +144,23 @@ export class CartEffect {
     clearCart$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(clearCart),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(() => {
-                this.store.dispatch(showSpinner());
                 return this.cartService.clearCart().pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return clearCartSuccess();
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(clearCartFailure({ error: error }))
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );

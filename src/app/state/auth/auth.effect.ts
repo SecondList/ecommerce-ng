@@ -16,22 +16,25 @@ export class AuthEffect {
     login$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(login),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             switchMap(({ email, password }) => {
-                this.store.dispatch(showSpinner());
                 return this.authService.login(email, password).pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.cookieService.set('userToken', baseResponse.result.token);
                         this.cookieService.set('refreshToken', baseResponse.result.refreshToken);
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return loginSuccess({ token: baseResponse.result.token, refreshToken: baseResponse.result.refreshToken });
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(loginFailure({ error: error }));
                     })
                 )
+            }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
             })
         )
     );
@@ -39,21 +42,24 @@ export class AuthEffect {
     register$: Observable<Action> = createEffect(() =>
         this.actions$.pipe(
             ofType(register),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             switchMap(({ email, password, confirmPassword }) => {
-                this.store.dispatch(showSpinner());
                 return this.authService.register(email, password, confirmPassword).pipe(
                     map((baseResponse) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(baseResponse.message!, 'Close', { duration: 3000 });
                         return registerSuccess();
                     }),
                     catchError((error) => {
-                        this.store.dispatch(hideSpinner());
                         this.snackBar.open(error!, 'Close', { duration: 5000 });
                         return of(registerFailure({ error: error }));
                     })
                 )
             }),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
+            })
             // tap((payload) => console.log(payload))
         )
     );

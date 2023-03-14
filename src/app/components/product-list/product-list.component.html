@@ -8,10 +8,13 @@
                     <div fxLayout="row wrap" fxLayoutGap="16px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let product of data.result">
                             <mat-card fxFlex="100%" fxLayout="column">
-                                <img mat-card-image [src]="product.imagePath" [alt]="product.title">
+                                <div class="align-center">
+                                    <img mat-card-image [src]="product.imagePath" [alt]="product.title"
+                                        ngClass.gt-xs="product-image" ngClass.xs="product-image-xs">
+                                </div>
                                 <mat-card-content fxFlex="100%" fxLayout="column">
-                                    <p fxFlex="100%" mat-card-title>{{ product.title }}</p>
-                                    <p mat-card-subtitle>{{ product.price | currency:'MYR':'symbol':'1.2-2'}}</p>
+                                    <p fxFlex="100%" mat-card-title ngClass.lt-md="md-title-font-size">{{ product.title }}</p>
+                                    <p mat-card-subtitle ngClass.lt-md="md-subtitle-font-size">{{ product.price | currency:'MYR':'symbol':'1.2-2'}}</p>
                                 </mat-card-content>
                                 <mat-card-actions fxLayout="column">
                                     <app-add-cart-button [productId]="product.productId"></app-add-cart-button>
