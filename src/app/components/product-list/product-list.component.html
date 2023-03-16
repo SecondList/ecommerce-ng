@@ -7,7 +7,7 @@
                 <div class="content">
                     <div fxLayout="row wrap" fxLayoutGap="16px grid">
                         <div fxFlex="20%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let product of data.result">
-                            <mat-card fxFlex="100%" fxLayout="column">
+                            <mat-card fxFlex="100%" fxLayout="column" ngClass="product-card" [routerLink]="['/products/detail/', product.productId]">
                                 <div class="align-center">
                                     <img mat-card-image [src]="product.imagePath" [alt]="product.title"
                                         ngClass.gt-xs="product-image" ngClass.xs="product-image-xs">

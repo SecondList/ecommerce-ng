@@ -44,3 +44,7 @@ mat-form-field {
 .md-subtitle-font-size {
   font-size: 10px;
 }
+
+.product-card {
+  cursor: pointer;
+}

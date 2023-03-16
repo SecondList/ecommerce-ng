@@ -10,9 +10,6 @@ import { BaseResponse } from '../models/base-response';
 })
 export class ProductService {
   private _productUrl = "products";
-  // headers = new HttpHeaders({
-  //   Authorization: `Bearer ${token}`
-  // });
 
   constructor(private _http: HttpClient, private _config: ConfigService) { }
 
@@ -27,13 +24,19 @@ export class ProductService {
     );
   }
 
+  public getProduct(productId: number): Observable<BaseResponse> {
+    return this._http.get<BaseResponse>(
+      `${this.getApiUrl()}\\${productId}`,
+    )
+  }
+
   public createProduct(newProduct: Product): Observable<Product> {
     return this._http.post<Product>(
       this.getApiUrl(), newProduct
     );
   }
 
-  public getApiUrl(){
+  public getApiUrl() {
     return `${this._config.apiUrl}${this._productUrl}`;
   }
 }

@@ -31,7 +31,7 @@
     <mat-toolbar-row fxShow="false" fxShow.gt-sm>
         <div class="product-categories">
             <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
-                <button mat-button [routerLink]="['/products/', productCategory.categoryId]">
+                <button mat-button [routerLink]="['/products/category/', productCategory.categoryId]">
                     {{productCategory.categoryName}}
                 </button>
             </ng-container>
@@ -60,7 +60,7 @@
         </button>
     </ng-container>
     <ng-container *ngFor="let productCategory of (productCategory$ | async) as productCategories">
-        <button mat-menu-item [routerLink]="['/products/', productCategory.categoryId]">
+        <button mat-menu-item [routerLink]="['/products/category/', productCategory.categoryId]">
             {{productCategory.categoryName}}
         </button>
     </ng-container>

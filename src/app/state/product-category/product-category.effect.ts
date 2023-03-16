@@ -15,7 +15,9 @@ export class ProductCategoryEffect {
     loadProductCategory$: Observable<Action> = createEffect(() =>
         this.action$.pipe(
             ofType(loadProductCategory),
-            // tap(() => this.store.dispatch(showSpinner())),
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(showSpinner()) })
+            }),
             mergeMap(() => {
                 return this.productCategoryService.getProductCategories().pipe(
                     map(baseResponse => {
@@ -27,7 +29,9 @@ export class ProductCategoryEffect {
                     })
                 )
             }),
-            // tap(() => this.store.dispatch(hideSpinner()))
+            tap(() => {
+                setTimeout(() => { this.store.dispatch(hideSpinner()) })
+            })
         )
     );
 

@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title></mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="flex-column">
+        <ng-container *ngIf="product$ | async as product">
+            <!-- <div fxLayout="row" fxLayoutAlign="space-between center"> -->
+            <div class="flex-row space-between" ngClass.lt-md="row-wrap">
+                <div class="align-center">
+                    <img mat-card-image [src]="product.imagePath" [alt]="product.title" ngClass.gt-xs="product-image"
+                        ngClass.xs="product-image-xs">
+                </div>
+                <div ngClass="align-center flex-column">
+                    <mat-card-title ngClass.lt-md="md-title-font-size">{{ product.title }}</mat-card-title>
+                    <mat-card-subtitle ngClass.lt-md="md-subtitle-font-size">{{ product.price| currency:'MYR':'symbol':'1.2-2' }}</mat-card-subtitle>
+                    <div ngClass="margin-top"><app-add-cart-button [productId]="product.productId"></app-add-cart-button></div>
+                </div>
+            </div>
+            <div ngClass="border-top margin-top">
+                <mat-card-subtitle ngClass.lt-md="md-subtitle-font-size">{{ product.description }}</mat-card-subtitle>
+            </div>
+        </ng-container>
+    </mat-card-content>
+</mat-card>

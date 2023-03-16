@@ -57,6 +57,7 @@ import { orderReducer } from './state/order/order.reducer';
 import { OrderEffect } from './state/order/order.effect';
 import { NotfoundComponent } from './components/notfound/notfound.component';
 import { jwtHelperFactory } from './services/jwt-helper.service';
+import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { jwtHelperFactory } from './services/jwt-helper.service';
     OrderListComponent,
     OrderComponent,
     NotfoundComponent,
+    ProductDetailComponent,
   ],
   imports: [
     BrowserModule,
